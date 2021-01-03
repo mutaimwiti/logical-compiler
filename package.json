@@ -1,0 +1,9 @@
+{
+  "name": "bool-eval",
+  "version": "0.1.0-rc0",
+  "description": "Evaluate boolean driven expressions",
+  "main": "index.js",
+  "repository": "git@github.com:mutaimwiti/bool-eval.git",
+  "author": "Mutai Mwiti <mutaimwiti40@gmail.com>",
+  "license": "MIT"
+}

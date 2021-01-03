@@ -1,17 +1,23 @@
 const operators = {$or: 'some', $and: 'every'};
 
-export const boolEval = (expression, options = {}) => {
+const getFnArgs = (value) => Array.isArray(value) ? value : [value];
 
+export const boolEval = (expression, options = {}) => {
     const {fns = {}} = options;
 
-    if (typeof expression === 'boolean') return expression;
-    if (typeof expression === 'function') return expression();
-    if (!expression || typeof expression !== 'object') return false;
+    const evaluate = (exp) => {
+        if (typeof exp === 'boolean') return exp;
+        if (typeof exp === 'function') return exp();
+        if (!exp || typeof exp !== 'object') return false;
 
-    const [key, value] = Object.entries(expression)[0];
+        const [key, value] = Object.entries(exp)[0];
 
-    if (key in operators) return value[operators[key]](boolEval, options);
-    if (key in fns) return fns[key](value);
+        if (key in operators) return value[operators[key]](evaluate);
+        if (key in fns) return fns[key](...getFnArgs(value));
+        if (key) throw Error(`Undefined operation: ${key}`);
 
-    return false;
+        return false;
+    };
+
+    return evaluate(expression);
 }

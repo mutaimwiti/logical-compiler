@@ -1,5 +1,5 @@
-import boolExec from './index';
-import { createException } from './utils';
+import boolExec from '../src';
+import { createException } from '../src/utils';
 
 describe('boolExec()', function () {
   it('should return false by default', () => {

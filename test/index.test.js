@@ -113,7 +113,7 @@ describe('boolExec()', function () {
       };
 
       it('should throw', () => {
-        let expression = { getValue: null };
+        const expression = { getValue: null };
 
         expect(() => boolExec(expression, options)).toThrow(
           createException('Unexpected return type [number] from a fn'),

@@ -34,14 +34,16 @@ module.exports = (expression, options = {}) => {
 
     if (typeof exp === 'boolean') return exp;
 
-    if (typeof exp === 'function') return executeFunction(callCount, 'callback', exp);
+    if (typeof exp === 'function')
+      return executeFunction(callCount, 'callback', exp);
 
     if (!exp || typeof exp !== 'object') return false;
 
     const [key, value] = Object.entries(exp)[0];
 
     if (key in operators) return value[operators[key]](evaluate);
-    if (key in fns) return executeFunction(callCount, 'fn', fns[key], getFnArgs(value));
+    if (key in fns)
+      return executeFunction(callCount, 'fn', fns[key], getFnArgs(value));
 
     if (key) throw createException(`Undefined operation: ${key}`);
 

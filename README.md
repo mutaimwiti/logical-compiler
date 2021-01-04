@@ -12,7 +12,7 @@ $ npm install bool-exec --save
 $ yarn add bool-exec
 ```
 
-### $and operator
+### AND operator
 
 ```javascript
 import boolExec from 'bool-exec';
@@ -30,7 +30,7 @@ expression = { $and: [false, false] };
 boolExec(expression); // false
 ```
 
-### $or operator
+### OR operator
 
 ```javascript
 import boolExec from 'bool-exec';

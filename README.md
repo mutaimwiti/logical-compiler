@@ -225,13 +225,13 @@ boolExec(expression, options); // true
 
 1. An asynchronous call can be made inside a callback or function. Currently, the library does not support promise
    returning callbacks or functions on nested expressions. If one is found, an exception is thrown. Promise returning
-   callbacks or functions are only allowed ALONE. The clean workaround is to resolve values resulting from asynchronous
-   calls before calling `boolExec()`.
+   executables are only allowed ALONE. The clean workaround is to resolve values resulting from asynchronous calls 
+   before calling `boolExec()`.
 
-2. Callbacks and fns rules must explicitly return boolean values to avoid the ambiguity of relying on truthiness.
-   Relying on truthiness would pose a serious loophole. This is because the callback might accidentally resolve to true
-   on a non-boolean value. If the library encounters a callback that resolves to a non-boolean value, it throws an
-   exception. See [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) documentation on truthy values.
+2. Callbacks and functions must explicitly return boolean values to avoid the ambiguity of relying on truthiness. 
+   Relying on truthiness would pose a serious loophole because the executable might accidentally resolve to true on a 
+   non-boolean value. If the library encounters a callback that resolves to a non-boolean value, it throws an exception. 
+   See [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) documentation on truthy values.
 
 ### Licence
 

@@ -24,6 +24,8 @@ const executeFunction = (callCount, type, fn, args = []) => {
   return result;
 };
 
+// Credit - https://stackoverflow.com/questions/55240828
+
 module.exports = (expression, options = {}) => {
   const { fns = {} } = options;
 

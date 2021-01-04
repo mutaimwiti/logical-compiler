@@ -1,7 +1,7 @@
 {
-  "name": "boolean-executor",
+  "name": "boolean-compiler",
   "version": "0.1.0-rc0",
-  "description": "Evaluate boolean driven expressions",
+  "description": "Compile boolean expressions, specifically mongo-like boolean expressions",
   "main": "index.js",
   "files": [
     "/lib"

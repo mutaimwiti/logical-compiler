@@ -1,3 +1,3 @@
 export const createException = (message) => {
-  return Error(`[boolean-executor]: ${message}`);
+  return Error(`[boolean-compiler]: ${message}`);
 };

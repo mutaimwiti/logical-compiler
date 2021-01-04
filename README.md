@@ -1,28 +1,28 @@
-# boolean-executor
+# boolean-compiler
 
-[![build](https://travis-ci.com/mutaimwiti/boolean-executor.svg?branch=master)](https://travis-ci.com/mutaimwiti/boolean-executor)
-[![version](https://img.shields.io/npm/v/boolean-executor.svg)](https://www.npmjs.com/package/boolean-executor)
-[![downloads](https://img.shields.io/npm/dm/boolean-executor.svg)](https://www.npmjs.com/package/boolean-executor)
-[![license](https://img.shields.io/npm/l/boolean-executor.svg)](https://www.npmjs.com/package/boolean-executor)
+[![build](https://travis-ci.com/mutaimwiti/boolean-compiler.svg?branch=master)](https://travis-ci.com/mutaimwiti/boolean-compiler)
+[![version](https://img.shields.io/npm/v/boolean-compiler.svg)](https://www.npmjs.com/package/boolean-compiler)
+[![downloads](https://img.shields.io/npm/dm/boolean-compiler.svg)](https://www.npmjs.com/package/boolean-compiler)
+[![license](https://img.shields.io/npm/l/boolean-compiler.svg)](https://www.npmjs.com/package/boolean-compiler)
 
-Evaluate boolean driven expressions.
+Compile boolean expressions, specifically mongo-like boolean expressions.
 
 ### Installation
 
 Use one of the two based on your project's dependency manager.
 
 ```bash
-$ npm install boolean-executor --save
+$ npm install boolean-compiler --save
 
-$ yarn add boolean-executor
+$ yarn add boolean-compiler
 ```
 
 ### Getting started
 
 ```javascript
-import boolExec from 'boolean-executor';
+import compile from 'boolean-compiler';
 
-boolExec(expression, options); //false
+compile(expression, options); //false
 ```
 
 Arguments:
@@ -35,32 +35,32 @@ Arguments:
 
 ```javascript
 let expression = { $and: [true, true] };
-boolExec(expression); //true
+compile(expression); //true
 
 expression = { $and: [true, false] };
-boolExec(expression); // false
+compile(expression); // false
 
 expression = { $and: [false, true] };
-boolExec(expression); // false
+compile(expression); // false
 
 expression = { $and: [false, false] };
-boolExec(expression); // false
+compile(expression); // false
 ```
 
 ### OR operator
 
 ```javascript
 let expression = { $or: [true, true] };
-boolExec(expression); //true
+compile(expression); //true
 
 expression = { $or: [true, false] };
-boolExec(expression); // true
+compile(expression); // true
 
 expression = { $or: [false, true] };
-boolExec(expression); // true
+compile(expression); // true
 
 expression = { $or: [false, false] };
-boolExec(expression); // false
+compile(expression); // false
 ```
 
 ### Callbacks
@@ -69,20 +69,20 @@ boolExec(expression); // false
 
 ```javascript
 let cb = () => true;
-boolExec(cb); // true
+compile(cb); // true
 
 cb = () => false;
-boolExec(cb); // false
+compile(cb); // false
 ```
 
 #### Promise callback
 
 ```javascript
 cb = () => Promise.resolve(true);
-await boolExec(cb); //true
+await compile(cb); //true
 
 cb = () => Promise.resolve(false);
-await boolExec(cb); // false
+await compile(cb); // false
 ```
 
 #### Nested promise callback
@@ -92,7 +92,7 @@ const expression = {
   $and: [true, () => Promise.resolve(true)],
 };
 
-boolExec(expression); // Error: Unexpected nested promise callback
+compile(expression); // Error: Unexpected nested promise callback
 ```
 
 ### Functions
@@ -107,10 +107,10 @@ const options = {
 };
 
 let expression = { isEven: 7 };
-boolExec(expression, options); // false
+compile(expression, options); // false
 
 expression = { isEven: 6 };
-boolExec(expression, options); // true
+compile(expression, options); // true
 ```
 
 > Note that the function is defined on the `fns` attribute of the `options` argument.
@@ -125,10 +125,10 @@ const options = {
 };
 
 expression = { isEqual: [3, 3] };
-await boolExec(expression, options); // true
+await compile(expression, options); // true
 
 expression = { isEqual: [3, 5] };
-await boolExec(expression, options); // false
+await compile(expression, options); // false
 ```
 
 #### Nested promise function
@@ -144,7 +144,7 @@ const expression = {
   $or: [false, { authenticated: null }],
 };
 
-boolExec(expression, options); // Error: Unexpected nested promise fn
+compile(expression, options); // Error: Unexpected nested promise fn
 ```
 
 ### Compound expressions
@@ -154,7 +154,7 @@ let expression = {
   $or: [{ $and: [true, true] }, false],
 };
 
-boolExec(expression); // true
+compile(expression); // true
 ```
 
 ```javascript
@@ -162,7 +162,7 @@ expression = {
   $or: [() => false, () => false],
 };
 
-boolExec(expression); // false
+compile(expression); // false
 ```
 
 ```javascript
@@ -170,7 +170,7 @@ expression = {
   $and: [() => true, true],
 };
 
-boolExec(expression); // true
+compile(expression); // true
 ```
 
 ```javascript
@@ -184,7 +184,7 @@ expression = {
   ],
 };
 
-boolExec(expression); // true
+compile(expression); // true
 ```
 
 ```javascript
@@ -200,7 +200,7 @@ expression = {
   $and: [() => true, { $or: [true, false] }, { any: [5, [1, 3, 4, 6, 7]] }],
 };
 
-boolExec(expression, options); // false
+compile(expression, options); // false
 
 expression = {
   $or: [
@@ -216,7 +216,7 @@ expression = {
   ],
 };
 
-boolExec(expression, options); // true
+compile(expression, options); // true
 ```
 
 > Operators can be nested in any fashion to achieve the desired logical check.
@@ -226,7 +226,7 @@ boolExec(expression, options); // true
 1. An asynchronous call can be made inside a callback or function. Currently, the library does not support promise
    returning callbacks or functions on nested expressions. If one is found, an exception is thrown. Promise returning
    executables are only allowed ALONE. The clean workaround is to resolve values resulting from asynchronous calls 
-   before calling `boolExec()`.
+   before invoking the compiler.
 
 2. Callbacks and functions must explicitly return boolean values to avoid the ambiguity of relying on truthiness. 
    Relying on truthiness would pose a serious loophole because the executable might accidentally resolve to true on a 

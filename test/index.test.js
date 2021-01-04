@@ -1,31 +1,31 @@
-import boolExec from '../src';
+import compile from '../src';
 import { createException } from '../src/utils';
 
-describe('boolExec()', function () {
+describe('compile()', function () {
   it('should return false by default', () => {
-    expect(boolExec()).toEqual(false);
+    expect(compile()).toEqual(false);
   });
 
   describe('callback expressions', () => {
     it('should return expected value', () => {
       let cb = () => true;
 
-      expect(boolExec(cb)).toEqual(true);
+      expect(compile(cb)).toEqual(true);
 
       cb = () => false;
 
-      expect(boolExec(cb)).toEqual(false);
+      expect(compile(cb)).toEqual(false);
     });
 
     describe('returning promise', () => {
       it('should return expected value', async () => {
         let cb = () => Promise.resolve(true);
 
-        expect(await boolExec(cb)).toEqual(true);
+        expect(await compile(cb)).toEqual(true);
 
         cb = () => Promise.resolve(false);
 
-        expect(await boolExec(cb)).toEqual(false);
+        expect(await compile(cb)).toEqual(false);
       });
     });
 
@@ -33,7 +33,7 @@ describe('boolExec()', function () {
       it('should throw', () => {
         const callback = () => 'foo';
 
-        expect(() => boolExec(callback)).toThrow(
+        expect(() => compile(callback)).toThrow(
           createException('Unexpected return type [string] from a callback'),
         );
       });
@@ -43,32 +43,32 @@ describe('boolExec()', function () {
   describe('AND expressions', () => {
     it('should return expected value', () => {
       let expression = { $and: [true, true] };
-      expect(boolExec(expression)).toEqual(true);
+      expect(compile(expression)).toEqual(true);
 
       expression = { $and: [true, false] };
-      expect(boolExec(expression)).toEqual(false);
+      expect(compile(expression)).toEqual(false);
 
       expression = { $and: [false, true] };
-      expect(boolExec(expression)).toEqual(false);
+      expect(compile(expression)).toEqual(false);
 
       expression = { $and: [false, false] };
-      expect(boolExec(expression)).toEqual(false);
+      expect(compile(expression)).toEqual(false);
     });
   });
 
   describe('OR expressions', () => {
     it('should return expected value', () => {
       let expression = { $or: [true, true] };
-      expect(boolExec(expression)).toEqual(true);
+      expect(compile(expression)).toEqual(true);
 
       expression = { $or: [true, false] };
-      expect(boolExec(expression)).toEqual(true);
+      expect(compile(expression)).toEqual(true);
 
       expression = { $or: [false, true] };
-      expect(boolExec(expression)).toEqual(true);
+      expect(compile(expression)).toEqual(true);
 
       expression = { $or: [false, false] };
-      expect(boolExec(expression)).toEqual(false);
+      expect(compile(expression)).toEqual(false);
     });
   });
 
@@ -81,10 +81,10 @@ describe('boolExec()', function () {
       };
 
       let expression = { isEven: 7 };
-      expect(boolExec(expression, options)).toEqual(false);
+      expect(compile(expression, options)).toEqual(false);
 
       expression = { isEven: 6 };
-      expect(boolExec(expression, options)).toEqual(true);
+      expect(compile(expression, options)).toEqual(true);
     });
 
     describe('returning promise', () => {
@@ -97,11 +97,11 @@ describe('boolExec()', function () {
       it('should return expected value', async () => {
         let expression = { isEqual: [3, 3] };
 
-        expect(await boolExec(expression, options)).toEqual(true);
+        expect(await compile(expression, options)).toEqual(true);
 
         expression = { isEqual: [3, 5] };
 
-        expect(await boolExec(expression, options)).toEqual(false);
+        expect(await compile(expression, options)).toEqual(false);
       });
     });
 
@@ -115,7 +115,7 @@ describe('boolExec()', function () {
       it('should throw', () => {
         const expression = { getValue: null };
 
-        expect(() => boolExec(expression, options)).toThrow(
+        expect(() => compile(expression, options)).toThrow(
           createException('Unexpected return type [number] from a fn'),
         );
       });
@@ -129,25 +129,25 @@ describe('boolExec()', function () {
         let expression = {
           $or: [{ $and: [true, true] }, false],
         };
-        expect(boolExec(expression)).toEqual(true);
+        expect(compile(expression)).toEqual(true);
 
         // scenario 2
         expression = {
           $or: [{ $and: [true, false] }, false],
         };
-        expect(boolExec(expression)).toEqual(false);
+        expect(compile(expression)).toEqual(false);
 
         // scenario 3
         expression = {
           $and: [true, { $or: [false, true] }],
         };
-        expect(boolExec(expression)).toEqual(true);
+        expect(compile(expression)).toEqual(true);
 
         // scenario 4
         expression = {
           $and: [false, { $or: [false, true] }],
         };
-        expect(boolExec(expression)).toEqual(false);
+        expect(compile(expression)).toEqual(false);
       });
     });
 
@@ -156,25 +156,25 @@ describe('boolExec()', function () {
         let expression = {
           $or: [() => true, true],
         };
-        expect(boolExec(expression)).toEqual(true);
+        expect(compile(expression)).toEqual(true);
 
         // scenario 2
         expression = {
           $or: [true, () => false],
         };
-        expect(boolExec(expression)).toEqual(true);
+        expect(compile(expression)).toEqual(true);
 
         // scenario 3
         expression = {
           $or: [() => false, () => true],
         };
-        expect(boolExec(expression)).toEqual(true);
+        expect(compile(expression)).toEqual(true);
 
         // scenario 4
         expression = {
           $or: [() => false, () => false],
         };
-        expect(boolExec(expression)).toEqual(false);
+        expect(compile(expression)).toEqual(false);
       });
     });
 
@@ -183,25 +183,25 @@ describe('boolExec()', function () {
         let expression = {
           $and: [() => true, true],
         };
-        expect(boolExec(expression)).toEqual(true);
+        expect(compile(expression)).toEqual(true);
 
         // scenario 2
         expression = {
           $and: [true, () => false],
         };
-        expect(boolExec(expression)).toEqual(false);
+        expect(compile(expression)).toEqual(false);
 
         // scenario 3
         expression = {
           $and: [() => false, () => true],
         };
-        expect(boolExec(expression)).toEqual(false);
+        expect(compile(expression)).toEqual(false);
 
         // scenario 4
         expression = {
           $and: [() => false, () => false],
         };
-        expect(boolExec(expression)).toEqual(false);
+        expect(compile(expression)).toEqual(false);
       });
     });
 
@@ -211,25 +211,25 @@ describe('boolExec()', function () {
         let expression = {
           $and: [() => true, { $or: [false, () => true] }],
         };
-        expect(boolExec(expression)).toEqual(true);
+        expect(compile(expression)).toEqual(true);
 
         // scenario 2
         expression = {
           $and: [() => false, { $or: [true, false] }],
         };
-        expect(boolExec(expression)).toEqual(false);
+        expect(compile(expression)).toEqual(false);
 
         // scenario 3
         expression = {
           $or: [() => false, false, { $and: [true, true] }],
         };
-        expect(boolExec(expression)).toEqual(true);
+        expect(compile(expression)).toEqual(true);
 
         // scenario 4
         expression = {
           $or: [() => false, false, { $and: [true, false] }],
         };
-        expect(boolExec(expression)).toEqual(false);
+        expect(compile(expression)).toEqual(false);
 
         // scenario 5
         expression = {
@@ -246,7 +246,7 @@ describe('boolExec()', function () {
             },
           ],
         };
-        expect(boolExec(expression)).toEqual(true);
+        expect(compile(expression)).toEqual(true);
       });
     });
 
@@ -267,7 +267,7 @@ describe('boolExec()', function () {
             { any: [5, [1, 3, 4, 5, 6]] },
           ],
         };
-        expect(boolExec(expression, options)).toEqual(true);
+        expect(compile(expression, options)).toEqual(true);
 
         // scenario 2
         expression = {
@@ -277,7 +277,7 @@ describe('boolExec()', function () {
             { any: [5, [1, 3, 4, 6, 7]] },
           ],
         };
-        expect(boolExec(expression, options)).toEqual(false);
+        expect(compile(expression, options)).toEqual(false);
 
         // scenario 3
         expression = {
@@ -293,7 +293,7 @@ describe('boolExec()', function () {
             },
           ],
         };
-        expect(boolExec(expression, options)).toEqual(true);
+        expect(compile(expression, options)).toEqual(true);
 
         // scenario 4
         expression = {
@@ -309,7 +309,7 @@ describe('boolExec()', function () {
             },
           ],
         };
-        expect(boolExec(expression, options)).toEqual(false);
+        expect(compile(expression, options)).toEqual(false);
 
         // scenario 5
         expression = {
@@ -326,7 +326,7 @@ describe('boolExec()', function () {
             },
           ],
         };
-        expect(boolExec(expression, options)).toEqual(true);
+        expect(compile(expression, options)).toEqual(true);
       });
 
       describe('nested callback returning promise', () => {
@@ -335,7 +335,7 @@ describe('boolExec()', function () {
             $and: [true, () => Promise.resolve(true)],
           };
 
-          expect(() => boolExec(expression)).toThrow(
+          expect(() => compile(expression)).toThrow(
             createException('Unexpected nested promise callback'),
           );
         });
@@ -353,7 +353,7 @@ describe('boolExec()', function () {
             $or: [false, { authenticated: null }],
           };
 
-          expect(() => boolExec(expression, options)).toThrow(
+          expect(() => compile(expression, options)).toThrow(
             createException('Unexpected nested promise fn'),
           );
         });

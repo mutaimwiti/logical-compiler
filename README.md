@@ -1,26 +1,26 @@
-# boolean-compiler
+# logical-compiler
 
-[![build](https://travis-ci.com/mutaimwiti/boolean-compiler.svg?branch=master)](https://travis-ci.com/mutaimwiti/boolean-compiler)
-[![version](https://img.shields.io/npm/v/boolean-compiler.svg)](https://www.npmjs.com/package/boolean-compiler)
-[![downloads](https://img.shields.io/npm/dm/boolean-compiler.svg)](https://www.npmjs.com/package/boolean-compiler)
-[![license](https://img.shields.io/npm/l/boolean-compiler.svg)](https://www.npmjs.com/package/boolean-compiler)
+[![build](https://travis-ci.com/mutaimwiti/logical-compiler.svg?branch=master)](https://travis-ci.com/mutaimwiti/logical-compiler)
+[![version](https://img.shields.io/npm/v/logical-compiler.svg)](https://www.npmjs.com/package/logical-compiler)
+[![downloads](https://img.shields.io/npm/dm/logical-compiler.svg)](https://www.npmjs.com/package/logical-compiler)
+[![license](https://img.shields.io/npm/l/logical-compiler.svg)](https://www.npmjs.com/package/logical-compiler)
 
-Compile boolean expressions, specifically mongo-like boolean expressions.
+Compile boolean expressions - based on mongodb boolean operators - $and, $or.
 
 ### Installation
 
 Use one of the two based on your project's dependency manager.
 
 ```bash
-$ npm install boolean-compiler --save
+$ npm install logical-compiler --save
 
-$ yarn add boolean-compiler
+$ yarn add logical-compiler
 ```
 
 ### Getting started
 
 ```javascript
-import compile from 'boolean-compiler';
+import compile from 'logical-compiler';
 
 compile(expression, options); //false
 ```

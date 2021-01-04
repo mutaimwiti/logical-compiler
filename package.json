@@ -1,7 +1,7 @@
 {
-  "name": "boolean-compiler",
+  "name": "logical-compiler",
   "version": "0.1.0-rc0",
-  "description": "Compile boolean expressions, specifically mongo-like boolean expressions",
+  "description": "Compile boolean expressions - based on mongodb boolean operators - $and, $or",
   "main": "index.js",
   "files": [
     "/lib"

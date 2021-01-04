@@ -2,15 +2,15 @@
   "name": "bool-exec",
   "version": "0.1.0-rc0",
   "description": "Evaluate boolean driven expressions",
-  "main": "index.lib.js",
+  "main": "index.js",
   "files": [
-    "index.lib.js"
+    "/lib"
   ],
   "scripts": {
     "lint": "eslint .",
     "test": "jest --colors",
-    "clean": "rimraf index.lib.js",
-    "build": "babel src/index.js -o index.lib.js",
+    "clean": "rimraf lib/",
+    "build": "babel -d lib/ src/",
     "prepublishOnly": "yarn clean && yarn build && yarn lint && yarn test"
   },
   "repository": "git@github.com:mutaimwiti/bool-eval.git",

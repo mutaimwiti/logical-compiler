@@ -12,7 +12,7 @@ $ npm install bool-exec --save
 $ yarn add bool-exec
 ```
 
-### AND operator
+### $and operator
 
 ```javascript
 import boolExec from 'bool-exec';
@@ -30,7 +30,7 @@ expression = { $and: [false, false] };
 boolExec(expression); // false
 ```
 
-### OR operator
+### $or operator
 
 ```javascript
 import boolExec from 'bool-exec';
@@ -48,9 +48,9 @@ expression = { $or: [false, false] };
 boolExec(expression); // false
 ```
 
-### callbacks
+### Callbacks
 
-#### simple callback
+#### Simple callback
 ```javascript
 import boolExec from 'bool-exec';
 
@@ -61,7 +61,7 @@ cb = () => false;
 boolExec(cb); // false
 ```
 
-#### promise callback
+#### Promise callback
 ```javascript
 import boolExec from 'bool-exec';
 
@@ -72,7 +72,7 @@ cb = () => Promise.resolve(false);
 await boolExec(cb); // false
 ```
 
-#### nested promise callback
+#### Nested promise callback
 ```javascript
 import boolExec from 'bool-exec';
 
@@ -86,7 +86,7 @@ boolExec(expression); // Error: Unexpected nested promise callback
 
 ### fns
 
-#### simple fn
+#### Simple fn
 ```javascript
 import boolExec from 'bool-exec';
 
@@ -103,7 +103,7 @@ expression = { isEven: 6 };
 boolExec(expression, options); // true
 ```
 
-#### promise fn
+#### Promise fn
 ```javascript
 import boolExec from 'bool-exec';
 
@@ -120,7 +120,7 @@ expression = { isEqual: [3, 5] };
 await boolExec(expression, options); // false
 ```
 
-#### nested promise fn
+#### Nested promise fn
 ```javascript
 import boolExec from 'bool-exec';
 
@@ -137,7 +137,7 @@ const expression = {
 boolExec(expression, options); // Error: Unexpected nested promise fn
 ```
 
-### compound expressions
+### Compound expressions
 ```javascript
 import boolExec from 'bool-exec';
 

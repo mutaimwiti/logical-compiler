@@ -14,6 +14,16 @@
     "prepublishOnly": "yarn clean && yarn build && yarn lint && yarn test"
   },
   "repository": "git@github.com:mutaimwiti/bool-eval.git",
+  "keywords": [
+    "exec",
+    "bool",
+    "logic",
+    "mongo",
+    "boolean",
+    "executor",
+    "expression",
+    "mongo-style"
+  ],
   "author": "Mutai Mwiti <mutaimwiti40@gmail.com>",
   "license": "MIT",
   "devDependencies": {

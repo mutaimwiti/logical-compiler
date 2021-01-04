@@ -1,6 +1,5 @@
 # bool-exec
-Evaluate boolean driven expressions
-
+Evaluate boolean driven expressions.
 
 ### Installation
 

@@ -2,15 +2,23 @@
   "name": "bool-exec",
   "version": "0.1.0-rc0",
   "description": "Evaluate boolean driven expressions",
-  "main": "index.js",
+  "main": "index.lib.js",
+  "files": [
+    "index.lib.js"
+  ],
   "scripts": {
+    "lint": "eslint .",
     "test": "jest --colors",
-    "lint": "eslint ."
+    "clean": "rimraf index.lib.js",
+    "build": "babel index.js -o index.lib.js",
+    "prepublishOnly": "yarn clean && yarn build && yarn lint && yarn test"
   },
   "repository": "git@github.com:mutaimwiti/bool-eval.git",
   "author": "Mutai Mwiti <mutaimwiti40@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "eslint": "^7.17.0",
     "eslint-config-airbnb-base": "^14.2.1",

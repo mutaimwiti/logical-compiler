@@ -197,7 +197,11 @@ const options = {
 };
 
 expression = {
-  $and: [() => true, { $or: [true, false] }, { any: [5, [1, 3, 4, 6, 7]] }],
+  $and: [
+    () => true, 
+    { $or: [true, false] },
+    { any: [5, [1, 3, 4, 6, 7]] }
+  ],
 };
 
 compile(expression, options); // false

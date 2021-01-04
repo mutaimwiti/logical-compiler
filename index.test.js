@@ -1,4 +1,4 @@
-import { boolExec } from './index';
+import boolExec from './index';
 
 describe('boolExec()', function () {
   it('should return false by default', () => {

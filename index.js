@@ -2,7 +2,7 @@ const operators = { $or: 'some', $and: 'every' };
 
 const getFnArgs = (value) => (Array.isArray(value) ? value : [value]);
 
-export const boolExec = (expression, options = {}) => {
+export default (expression, options = {}) => {
   const { fns = {} } = options;
 
   const evaluate = (exp) => {

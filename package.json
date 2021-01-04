@@ -1,7 +1,7 @@
 {
   "name": "logical-compiler",
   "version": "0.1.0-rc0",
-  "description": "Compile boolean expressions based on boolean operators $and and $or",
+  "description": "Compile boolean expressions based on boolean operators AND and OR",
   "main": "index.js",
   "files": [
     "/lib"

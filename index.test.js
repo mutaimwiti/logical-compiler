@@ -1,6 +1,6 @@
 import {boolEval} from "./index";
 
-describe('evaluate()', function () {
+describe('boolEval()', function () {
 
     it('should return false by default', () => {
 

@@ -6,7 +6,7 @@ describe('boolExec()', function () {
   });
 
   describe('callback expressions', () => {
-    it('should return correct value', () => {
+    it('should return expected value', () => {
       let cb = () => true;
 
       expect(boolExec(cb)).toEqual(true);
@@ -17,8 +17,8 @@ describe('boolExec()', function () {
     });
   });
 
-  describe('AND expression', () => {
-    it('should return correct value for simple booleans', () => {
+  describe('AND expressions', () => {
+    it('should return expected value', () => {
       let expression = { $and: [true, true] };
       expect(boolExec(expression)).toEqual(true);
 
@@ -33,8 +33,8 @@ describe('boolExec()', function () {
     });
   });
 
-  describe('OR expression', () => {
-    it('should return correct value for simple booleans', () => {
+  describe('OR expressions', () => {
+    it('should return expected value', () => {
       let expression = { $or: [true, true] };
       expect(boolExec(expression)).toEqual(true);
 
@@ -49,8 +49,8 @@ describe('boolExec()', function () {
     });
   });
 
-  describe('fn expression', () => {
-    it('should return correct value', () => {
+  describe('fn expressions', () => {
+    it('should return expected value', () => {
       const options = {
         fns: {
           isEven: (number) => number % 2 === 0,
@@ -65,9 +65,9 @@ describe('boolExec()', function () {
     });
   });
 
-  describe('compound expression', () => {
-    describe('AND - OR expression', () => {
-      it('should return correct values ', () => {
+  describe('compound expressions', () => {
+    describe('AND - OR expressions', () => {
+      it('should return expected value ', () => {
         // scenario 1
         let expression = {
           $or: [{ $and: [true, true] }, false],
@@ -94,8 +94,8 @@ describe('boolExec()', function () {
       });
     });
 
-    describe('OR - callback expression', () => {
-      it('should return correct values ', () => {
+    describe('OR - callback expressions', () => {
+      it('should return expected values ', () => {
         let expression = {
           $or: [() => true, true],
         };
@@ -121,8 +121,8 @@ describe('boolExec()', function () {
       });
     });
 
-    describe('AND - callback expression', () => {
-      it('should return correct values ', () => {
+    describe('AND - callback expressions', () => {
+      it('should return expected values ', () => {
         let expression = {
           $and: [() => true, true],
         };
@@ -148,8 +148,8 @@ describe('boolExec()', function () {
       });
     });
 
-    describe('AND - OR - callback expression', () => {
-      it('should return correct values ', () => {
+    describe('AND - OR - callback expressions', () => {
+      it('should return expected values ', () => {
         // scenario 1
         let expression = {
           $and: [() => true, { $or: [false, () => true] }],
@@ -193,8 +193,8 @@ describe('boolExec()', function () {
       });
     });
 
-    describe('AND - OR - fn - callback expression', () => {
-      it('should return correct values ', () => {
+    describe('AND - OR - fn - callback expressions', () => {
+      it('should return expected values ', () => {
         const options = {
           fns: {
             any: (target, values) => values.includes(target),

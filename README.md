@@ -1,6 +1,6 @@
 # bool-exec
 
-[![build](https://travis-ci.org/mutaimwiti/bool-exec.svg?branch=master)](https://travis-ci.org/mutaimwiti/bool-exec)
+[![build](https://travis-ci.com/mutaimwiti/bool-exec.svg?branch=master)](https://travis-ci.com/mutaimwiti/bool-exec)
 [![version](https://img.shields.io/npm/v/bool-exec.svg)](https://www.npmjs.com/package/bool-exec)
 [![downloads](https://img.shields.io/npm/dm/bool-exec.svg)](https://www.npmjs.com/package/bool-exec)
 [![license](https://img.shields.io/npm/l/bool-exec.svg)](https://www.npmjs.com/package/bool-exec)

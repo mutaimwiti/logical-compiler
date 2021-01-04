@@ -1,4 +1,5 @@
 import boolExec from './index';
+import { createException } from './utils';
 
 describe('boolExec()', function () {
   it('should return false by default', () => {
@@ -14,6 +15,28 @@ describe('boolExec()', function () {
       cb = () => false;
 
       expect(boolExec(cb)).toEqual(false);
+    });
+
+    describe('returning promise', () => {
+      it('should return expected value', async () => {
+        let cb = () => Promise.resolve(true);
+
+        expect(await boolExec(cb)).toEqual(true);
+
+        cb = () => Promise.resolve(false);
+
+        expect(await boolExec(cb)).toEqual(false);
+      });
+    });
+
+    describe('when it returns a non-boolean value', () => {
+      it('should throw', () => {
+        const callback = () => 'foo';
+
+        expect(() => boolExec(callback)).toThrow(
+          createException('Unexpected return type [string] from a callback'),
+        );
+      });
     });
   });
 
@@ -270,6 +293,18 @@ describe('boolExec()', function () {
           ],
         };
         expect(boolExec(expression, options)).toEqual(true);
+      });
+
+      describe('nested callback returning promise', () => {
+        it('should throw', () => {
+          const expression = {
+            $and: [true, () => Promise.resolve(true)],
+          };
+
+          expect(() => boolExec(expression)).toThrow(
+            createException('Unexpected nested promise callback'),
+          );
+        });
       });
     });
   });

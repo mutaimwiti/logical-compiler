@@ -1,0 +1,50 @@
+import { createException } from './utils';
+
+const operators = { $or: 'some', $and: 'every' };
+
+const getFnArgs = (value) => (Array.isArray(value) ? value : [value]);
+
+module.exports = (expression, options = {}) => {
+  const { fns = {} } = options;
+
+  let callCount = 0;
+
+  const evaluate = (exp) => {
+    callCount += 1;
+
+    if (typeof exp === 'boolean') return exp;
+
+    if (typeof exp === 'function') {
+      const result = exp();
+
+      if (result instanceof Promise) {
+        if (callCount > 1) {
+          throw createException('Unexpected nested promise callback');
+        }
+      } else {
+        const resultType = typeof result;
+
+        if (resultType !== 'boolean') {
+          throw createException(
+            `Unexpected return type [${resultType}] from a callback`,
+          );
+        }
+      }
+
+      return result;
+    }
+
+    if (!exp || typeof exp !== 'object') return false;
+
+    const [key, value] = Object.entries(exp)[0];
+
+    if (key in operators) return value[operators[key]](evaluate);
+    if (key in fns) return fns[key](...getFnArgs(value));
+
+    if (key) throw createException(`Undefined operation: ${key}`);
+
+    return false;
+  };
+
+  return evaluate(expression);
+};

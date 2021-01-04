@@ -22,10 +22,10 @@ $ yarn add bool-exec
 ```javascript
 import boolExec from 'bool-exec';
 
-boolExec(); //false
+boolExec(expression, options); //false
 ```
 
-`boolExec` arguments:
+Arguments:
 
 - `expression` - the boolean expression to be executed.
 - `options` - an optional object specifying options.

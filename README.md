@@ -149,6 +149,8 @@ boolExec(expression); // true
 ```
 
 ```javascript
+import boolExec from 'bool-exec';
+
 expression = {
     $or: [() => false, () => false],
 };
@@ -157,6 +159,8 @@ boolExec(expression); // false
 ```
 
 ```javascript
+import boolExec from 'bool-exec';
+
 expression = {
     $and: [() => true, true],
 };
@@ -165,6 +169,8 @@ boolExec(expression); // true
 ```
 
 ```javascript
+import boolExec from 'bool-exec';
+
 expression = {
     $or: [
         () => false,
@@ -182,6 +188,8 @@ boolExec(expression); // true
 ```
 
 ```javascript
+import boolExec from 'bool-exec';
+
 const options = {
     fns: {
         any: (target, values) => values.includes(target),

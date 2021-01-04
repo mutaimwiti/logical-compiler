@@ -4,7 +4,7 @@
   "description": "Evaluate boolean driven expressions",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --colors",
     "lint": "eslint ."
   },
   "repository": "git@github.com:mutaimwiti/bool-eval.git",

@@ -86,6 +86,40 @@ describe('boolExec()', function () {
       expression = { isEven: 6 };
       expect(boolExec(expression, options)).toEqual(true);
     });
+
+    describe('returning promise', () => {
+      const options = {
+        fns: {
+          isEqual: (num1, num2) => Promise.resolve(num1 === num2),
+        },
+      };
+
+      it('should return expected value', async () => {
+        let expression = { isEqual: [3, 3] };
+
+        expect(await boolExec(expression, options)).toEqual(true);
+
+        expression = { isEqual: [3, 5] };
+
+        expect(await boolExec(expression, options)).toEqual(false);
+      });
+    });
+
+    describe('when it returns a non-boolean value', () => {
+      const options = {
+        fns: {
+          getValue: () => 1,
+        },
+      };
+
+      it('should throw', () => {
+        let expression = { getValue: null };
+
+        expect(() => boolExec(expression, options)).toThrow(
+          createException('Unexpected return type [number] from a fn'),
+        );
+      });
+    });
   });
 
   describe('compound expressions', () => {
@@ -303,6 +337,24 @@ describe('boolExec()', function () {
 
           expect(() => boolExec(expression)).toThrow(
             createException('Unexpected nested promise callback'),
+          );
+        });
+      });
+
+      describe('nested fn returning promise', () => {
+        const options = {
+          fns: {
+            authenticated: () => Promise.resolve(true),
+          },
+        };
+
+        it('should throw', () => {
+          const expression = {
+            $or: [false, { authenticated: null }],
+          };
+
+          expect(() => boolExec(expression, options)).toThrow(
+            createException('Unexpected nested promise fn'),
           );
         });
       });

@@ -1,4 +1,4 @@
-# bool-eval
+# bool-exec
 Evaluate boolean driven expressions
 
 
@@ -84,9 +84,9 @@ boolExec(expression); // Error: Unexpected nested promise callback
 ```
 
 
-### fns
+### Functions
 
-#### Simple fn
+#### Simple function
 ```javascript
 import boolExec from 'bool-exec';
 
@@ -103,7 +103,7 @@ expression = { isEven: 6 };
 boolExec(expression, options); // true
 ```
 
-#### Promise fn
+#### Promise function
 ```javascript
 import boolExec from 'bool-exec';
 
@@ -120,7 +120,7 @@ expression = { isEqual: [3, 5] };
 await boolExec(expression, options); // false
 ```
 
-#### Nested promise fn
+#### Nested promise function
 ```javascript
 import boolExec from 'bool-exec';
 
@@ -144,18 +144,21 @@ import boolExec from 'bool-exec';
 let expression = {
     $or: [{ $and: [true, true] }, false],
 };
+
 boolExec(expression); // true
 
 
 expression = {
     $or: [() => false, () => false],
 };
+
 boolExec(expression); // false
 
 
 expression = {
     $and: [() => true, true],
 };
+
 boolExec(expression); // true
 
 
@@ -171,6 +174,7 @@ expression = {
         },
     ],
 };
+
 boolExec(expression); // true
 
 
@@ -180,6 +184,7 @@ const options = {
         all: (targets, values) => targets.every((target) => values.includes(target)),
     },
 };
+
 expression = {
     $and: [
         () => true,
@@ -187,6 +192,7 @@ expression = {
         { any: [5, [1, 3, 4, 6, 7]] },
     ],
 };
+
 boolExec(expression, options); // false
 
 
@@ -203,6 +209,7 @@ expression = {
         },
     ],
 };
+
 boolExec(expression, options); // true
 ```
 

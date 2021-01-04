@@ -1,10 +1,10 @@
-import {boolEval} from "./index";
+import {boolExec} from "./index";
 
-describe('boolEval()', function () {
+describe('boolExec()', function () {
 
     it('should return false by default', () => {
 
-        expect(boolEval()).toEqual(false);
+        expect(boolExec()).toEqual(false);
 
     });
 
@@ -12,43 +12,43 @@ describe('boolEval()', function () {
         it('should return correct value', () => {
             let cb = () => true;
 
-            expect(boolEval(cb)).toEqual(true);
+            expect(boolExec(cb)).toEqual(true);
 
             cb = () => false;
 
-            expect(boolEval(cb)).toEqual(false);
+            expect(boolExec(cb)).toEqual(false);
         });
     });
 
     describe('AND expression', () => {
         it('should return correct value for simple booleans', () => {
             let expression = {$and: [true, true]}
-            expect(boolEval(expression)).toEqual(true);
+            expect(boolExec(expression)).toEqual(true);
 
             expression = {$and: [true, false]}
-            expect(boolEval(expression)).toEqual(false);
+            expect(boolExec(expression)).toEqual(false);
 
             expression = {$and: [false, true]}
-            expect(boolEval(expression)).toEqual(false);
+            expect(boolExec(expression)).toEqual(false);
 
             expression = {$and: [false, false]}
-            expect(boolEval(expression)).toEqual(false);
+            expect(boolExec(expression)).toEqual(false);
         });
     });
 
     describe('OR expression', () => {
         it('should return correct value for simple booleans', () => {
             let expression = {$or: [true, true]}
-            expect(boolEval(expression)).toEqual(true);
+            expect(boolExec(expression)).toEqual(true);
 
             expression = {$or: [true, false]}
-            expect(boolEval(expression)).toEqual(true);
+            expect(boolExec(expression)).toEqual(true);
 
             expression = {$or: [false, true]}
-            expect(boolEval(expression)).toEqual(true);
+            expect(boolExec(expression)).toEqual(true);
 
             expression = {$or: [false, false]}
-            expect(boolEval(expression)).toEqual(false);
+            expect(boolExec(expression)).toEqual(false);
         });
     });
 
@@ -61,10 +61,10 @@ describe('boolEval()', function () {
             };
 
             let expression = {isEven: 7};
-            expect(boolEval(expression, options)).toEqual(false);
+            expect(boolExec(expression, options)).toEqual(false);
 
             expression = {isEven: 6};
-            expect(boolEval(expression, options)).toEqual(true);
+            expect(boolExec(expression, options)).toEqual(true);
         });
     });
 
@@ -78,7 +78,7 @@ describe('boolEval()', function () {
                         false
                     ]
                 };
-                expect(boolEval(expression)).toEqual(true);
+                expect(boolExec(expression)).toEqual(true);
 
                 // scenario 2
                 expression = {
@@ -87,7 +87,7 @@ describe('boolEval()', function () {
                         false
                     ]
                 };
-                expect(boolEval(expression)).toEqual(false);
+                expect(boolExec(expression)).toEqual(false);
 
                 // scenario 3
                 expression = {
@@ -96,7 +96,7 @@ describe('boolEval()', function () {
                         {$or: [false, true]}
                     ]
                 }
-                expect(boolEval(expression)).toEqual(true);
+                expect(boolExec(expression)).toEqual(true);
 
                 // scenario 4
                 expression = {
@@ -105,7 +105,7 @@ describe('boolEval()', function () {
                         {$or: [false, true]}
                     ]
                 }
-                expect(boolEval(expression)).toEqual(false);
+                expect(boolExec(expression)).toEqual(false);
             });
         });
 
@@ -114,25 +114,25 @@ describe('boolEval()', function () {
                 let expression = {
                     $or: [() => true, true]
                 }
-                expect(boolEval(expression)).toEqual(true);
+                expect(boolExec(expression)).toEqual(true);
 
                 // scenario 2
                 expression = {
                     $or: [true, () => false]
                 }
-                expect(boolEval(expression)).toEqual(true);
+                expect(boolExec(expression)).toEqual(true);
 
                 // scenario 3
                 expression = {
                     $or: [() => false, () => true]
                 }
-                expect(boolEval(expression)).toEqual(true);
+                expect(boolExec(expression)).toEqual(true);
 
                 // scenario 4
                 expression = {
                     $or: [() => false, () => false]
                 }
-                expect(boolEval(expression)).toEqual(false);
+                expect(boolExec(expression)).toEqual(false);
             });
         });
 
@@ -141,25 +141,25 @@ describe('boolEval()', function () {
                 let expression = {
                     $and: [() => true, true]
                 }
-                expect(boolEval(expression)).toEqual(true);
+                expect(boolExec(expression)).toEqual(true);
 
                 // scenario 2
                 expression = {
                     $and: [true, () => false]
                 }
-                expect(boolEval(expression)).toEqual(false);
+                expect(boolExec(expression)).toEqual(false);
 
                 // scenario 3
                 expression = {
                     $and: [() => false, () => true]
                 }
-                expect(boolEval(expression)).toEqual(false);
+                expect(boolExec(expression)).toEqual(false);
 
                 // scenario 4
                 expression = {
                     $and: [() => false, () => false]
                 }
-                expect(boolEval(expression)).toEqual(false);
+                expect(boolExec(expression)).toEqual(false);
             });
         });
 
@@ -172,7 +172,7 @@ describe('boolEval()', function () {
                         {$or: [false, () => true]}
                     ]
                 }
-                expect(boolEval(expression)).toEqual(true);
+                expect(boolExec(expression)).toEqual(true);
 
                 // scenario 2
                 expression = {
@@ -181,7 +181,7 @@ describe('boolEval()', function () {
                         {$or: [true, false]}
                     ]
                 }
-                expect(boolEval(expression)).toEqual(false);
+                expect(boolExec(expression)).toEqual(false);
 
                 // scenario 3
                 expression = {
@@ -191,7 +191,7 @@ describe('boolEval()', function () {
                         {$and: [true, true]}
                     ]
                 }
-                expect(boolEval(expression)).toEqual(true);
+                expect(boolExec(expression)).toEqual(true);
 
                 // scenario 4
                 expression = {
@@ -201,7 +201,7 @@ describe('boolEval()', function () {
                         {$and: [true, false]}
                     ]
                 }
-                expect(boolEval(expression)).toEqual(false);
+                expect(boolExec(expression)).toEqual(false);
 
                 // scenario 5
                 expression = {
@@ -218,7 +218,7 @@ describe('boolEval()', function () {
                         }
                     ]
                 }
-                expect(boolEval(expression)).toEqual(true);
+                expect(boolExec(expression)).toEqual(true);
             });
         });
 
@@ -238,7 +238,7 @@ describe('boolEval()', function () {
                         {any: [5, [1, 3, 4, 5, 6]]}
                     ]
                 }
-                expect(boolEval(expression, options)).toEqual(true);
+                expect(boolExec(expression, options)).toEqual(true);
 
                 // scenario 2
                 expression = {
@@ -248,7 +248,7 @@ describe('boolEval()', function () {
                         {any: [5, [1, 3, 4, 6, 7]]}
                     ]
                 }
-                expect(boolEval(expression, options)).toEqual(false);
+                expect(boolExec(expression, options)).toEqual(false);
 
                 // scenario 3
                 expression = {
@@ -259,7 +259,7 @@ describe('boolEval()', function () {
                         {all: [[3, 4, 7], [2, 3, 4, 5, 6, 7]]}
                     ]
                 }
-                expect(boolEval(expression, options)).toEqual(true);
+                expect(boolExec(expression, options)).toEqual(true);
 
                 // scenario 4
                 expression = {
@@ -270,7 +270,7 @@ describe('boolEval()', function () {
                         {all: [[3, 7, 9], [2, 3, 4, 5, 6]]}
                     ]
                 }
-                expect(boolEval(expression, options)).toEqual(false);
+                expect(boolExec(expression, options)).toEqual(false);
 
                 // scenario 5
                 expression = {
@@ -291,7 +291,7 @@ describe('boolEval()', function () {
                         }
                     ]
                 }
-                expect(boolEval(expression, options)).toEqual(true);
+                expect(boolExec(expression, options)).toEqual(true);
             });
         });
 

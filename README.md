@@ -14,7 +14,7 @@ $ yarn add bool-exec
 
 ### AND operator
 
-```
+```javascript
 import boolExec from 'bool-exec';
     
 let expression = { $and: [true, true] };
@@ -32,7 +32,7 @@ boolExec(expression); // false
 
 ### OR operator
 
-```
+```javascript
 import boolExec from 'bool-exec';
     
 let expression = { $or: [true, true] };
@@ -51,7 +51,7 @@ boolExec(expression); // false
 ### callbacks
 
 #### simple callback
-```
+```javascript
 import boolExec from 'bool-exec';
 
 let cb = () => true;
@@ -62,7 +62,7 @@ boolExec(cb); // false
 ```
 
 #### promise callback
-```
+```javascript
 import boolExec from 'bool-exec';
 
 cb = () => Promise.resolve(true);
@@ -73,7 +73,7 @@ await boolExec(cb); // false
 ```
 
 #### nested promise callback
-```
+```javascript
 import boolExec from 'bool-exec';
 
 const expression = {
@@ -87,7 +87,7 @@ boolExec(expression); // Error: Unexpected nested promise callback
 ### fns
 
 #### simple fn
-```
+```javascript
 import boolExec from 'bool-exec';
 
 const options = {
@@ -104,7 +104,7 @@ boolExec(expression, options); // true
 ```
 
 #### promise fn
-```
+```javascript
 import boolExec from 'bool-exec';
 
 const options = {
@@ -121,7 +121,7 @@ await boolExec(expression, options); // false
 ```
 
 #### nested promise fn
-```
+```javascript
 import boolExec from 'bool-exec';
 
 const options = {
@@ -138,7 +138,7 @@ boolExec(expression, options); // Error: Unexpected nested promise fn
 ```
 
 ### compound expressions
-```
+```javascript
 import boolExec from 'bool-exec';
 
 let expression = {
@@ -211,13 +211,13 @@ boolExec(expression, options); // true
 ##### IMPORTANT NOTES
 
 1. An asynchronous call can be made inside a callback or fn. Currently, the library does not support promise returning 
-   callbacks or fns on nested expressions. If one is found an exception is thrown. Promise returning callbacks or fns 
+   callbacks or fns on nested expressions. If one is found, an exception is thrown. Promise returning callbacks or fns 
    are only allowed ALONE. The clean workaround is to resolve values resulting from asynchronous calls before boolExec.
    the executor.
 
 2. Callbacks and fns rules must explicitly return boolean values to avoid the ambiguity of relying on truthiness. 
    Relying on truthiness would pose a serious loophole. This is because the callback might accidentally resolve to true
-   on a non-boolean value. If the library encounters a callback that resolves to a non-boolean value it throws an
+   on a non-boolean value. If the library encounters a callback that resolves to a non-boolean value, it throws an
    exception. See [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) documentation on truthy values.
 
 

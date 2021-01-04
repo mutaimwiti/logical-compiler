@@ -146,22 +146,25 @@ let expression = {
 };
 
 boolExec(expression); // true
+```
 
-
+```javascript
 expression = {
     $or: [() => false, () => false],
 };
 
 boolExec(expression); // false
+```
 
-
+```javascript
 expression = {
     $and: [() => true, true],
 };
 
 boolExec(expression); // true
+```
 
-
+```javascript
 expression = {
     $or: [
         () => false,
@@ -176,8 +179,9 @@ expression = {
 };
 
 boolExec(expression); // true
+```
 
-
+```javascript
 const options = {
     fns: {
         any: (target, values) => values.includes(target),

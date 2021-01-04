@@ -1,9 +1,9 @@
-# bool-exec
+# boolean-executor
 
-[![build](https://travis-ci.com/mutaimwiti/bool-exec.svg?branch=master)](https://travis-ci.com/mutaimwiti/bool-exec)
-[![version](https://img.shields.io/npm/v/bool-exec.svg)](https://www.npmjs.com/package/bool-exec)
-[![downloads](https://img.shields.io/npm/dm/bool-exec.svg)](https://www.npmjs.com/package/bool-exec)
-[![license](https://img.shields.io/npm/l/bool-exec.svg)](https://www.npmjs.com/package/bool-exec)
+[![build](https://travis-ci.com/mutaimwiti/boolean-executor.svg?branch=master)](https://travis-ci.com/mutaimwiti/boolean-executor)
+[![version](https://img.shields.io/npm/v/boolean-executor.svg)](https://www.npmjs.com/package/boolean-executor)
+[![downloads](https://img.shields.io/npm/dm/boolean-executor.svg)](https://www.npmjs.com/package/boolean-executor)
+[![license](https://img.shields.io/npm/l/boolean-executor.svg)](https://www.npmjs.com/package/boolean-executor)
 
 Evaluate boolean driven expressions.
 
@@ -12,15 +12,15 @@ Evaluate boolean driven expressions.
 Use one of the two based on your project's dependency manager.
 
 ```bash
-$ npm install bool-exec --save
+$ npm install boolean-executor --save
 
-$ yarn add bool-exec
+$ yarn add boolean-executor
 ```
 
 ### Getting started
 
 ```javascript
-import boolExec from 'bool-exec';
+import boolExec from 'boolean-executor';
 
 boolExec(expression, options); //false
 ```

@@ -1,5 +1,5 @@
 {
-  "name": "bool-exec",
+  "name": "boolean-executor",
   "version": "0.1.0-rc0",
   "description": "Evaluate boolean driven expressions",
   "main": "index.js",

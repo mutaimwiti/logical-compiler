@@ -229,10 +229,10 @@ boolExec(expression, options); // true
 
 ##### IMPORTANT NOTES
 
-1. An asynchronous call can be made inside a callback or fn. Currently, the library does not support promise returning 
-   callbacks or fns on nested expressions. If one is found, an exception is thrown. Promise returning callbacks or fns 
-   are only allowed ALONE. The clean workaround is to resolve values resulting from asynchronous calls before boolExec.
-   the executor.
+1. An asynchronous call can be made inside a callback or function. Currently, the library does not support promise 
+   returning callbacks or functions on nested expressions. If one is found, an exception is thrown. Promise returning 
+   callbacks or functions are only allowed ALONE. The clean workaround is to resolve values resulting from asynchronous 
+   calls before calling `boolExec()`.
 
 2. Callbacks and fns rules must explicitly return boolean values to avoid the ambiguity of relying on truthiness. 
    Relying on truthiness would pose a serious loophole. This is because the callback might accidentally resolve to true

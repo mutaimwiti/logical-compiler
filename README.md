@@ -5,7 +5,7 @@
 [![downloads](https://img.shields.io/npm/dm/logical-compiler.svg)](https://www.npmjs.com/package/logical-compiler)
 [![license](https://img.shields.io/npm/l/logical-compiler.svg)](https://www.npmjs.com/package/logical-compiler)
 
-Compile boolean expressions - based on mongodb boolean operators - $and, $or.
+Compile boolean expressions based on boolean operators `$and` and `$or`.
 
 ### Installation
 

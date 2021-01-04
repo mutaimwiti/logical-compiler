@@ -191,8 +191,7 @@ compile(expression); // true
 const options = {
   fns: {
     any: (target, values) => values.includes(target),
-    all: (targets, values) =>
-      targets.every((target) => values.includes(target)),
+    all: (targets, values) => targets.every((target) => values.includes(target)),
   },
 };
 

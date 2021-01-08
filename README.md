@@ -144,7 +144,7 @@ const expression = {
   $or: [false, { authenticated: null }],
 };
 
-compile(expression, options); // Error: Unexpected nested promise fn
+compile(expression, options); // Error: Unexpected nested promise function
 ```
 
 ### Compound expressions

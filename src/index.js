@@ -45,9 +45,9 @@ module.exports = (expression, options = {}) => {
 
     if (key in operators) return value[operators[key]](evaluate);
     if (key in fns)
-      return executeFunction(callCount, 'fn', fns[key], getFnArgs(value));
+      return executeFunction(callCount, 'function', fns[key], getFnArgs(value));
 
-    if (key) throw createException(`Undefined operation: ${key}`);
+    if (key) throw createException(`Undefined function or operator: ${key}`);
 
     return false;
   };

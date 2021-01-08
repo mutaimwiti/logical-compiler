@@ -116,7 +116,7 @@ describe('compile()', function () {
         const expression = { getValue: null };
 
         expect(() => compile(expression, options)).toThrow(
-          createException('Unexpected return type [number] from a fn'),
+          createException('Unexpected return type [number] from a function'),
         );
       });
     });
@@ -354,7 +354,7 @@ describe('compile()', function () {
           };
 
           expect(() => compile(expression, options)).toThrow(
-            createException('Unexpected nested promise fn'),
+            createException('Unexpected nested promise function'),
           );
         });
       });

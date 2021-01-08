@@ -122,6 +122,20 @@ describe('compile()', function () {
     });
   });
 
+  describe('Invalid function or operation expression', () => {
+    const options = {
+      fns: {},
+    };
+
+    it('should throw', () => {
+      const expression = { opFn: ['x', 'y'] };
+
+      expect(() => compile(expression, options)).toThrow(
+        createException('Undefined function or operator: opFn'),
+      );
+    });
+  });
+
   describe('compound expressions', () => {
     describe('AND - OR expressions', () => {
       it('should return expected value ', () => {

@@ -27,6 +27,10 @@ const executeFunction = (callCount, type, fn, args = []) => {
 // Credit - https://stackoverflow.com/questions/55240828
 
 module.exports = (expression, options = {}) => {
+  if (expression === undefined) {
+    throw createException('Expected an expression');
+  }
+
   const { fns = {} } = options;
 
   let callCount = 0;
@@ -39,7 +43,9 @@ module.exports = (expression, options = {}) => {
     if (typeof exp === 'function')
       return executeFunction(callCount, 'callback', exp);
 
-    if (!exp || typeof exp !== 'object') return false;
+    if (!exp || typeof exp !== 'object') {
+      throw createException(`Unexpected token '${exp}'`);
+    }
 
     const [key, value] = Object.entries(exp)[0];
 

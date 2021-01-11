@@ -40,35 +40,47 @@ describe('compile()', function () {
     });
   });
 
-  describe('AND expressions', () => {
-    it('should return expected value', () => {
-      let expression = { $and: [true, true] };
-      expect(compile(expression)).toEqual(true);
+  describe('operator expressions', () => {
+    describe('AND expressions', () => {
+      it('should return expected value', () => {
+        let expression = { $and: [true, true] };
+        expect(compile(expression)).toEqual(true);
 
-      expression = { $and: [true, false] };
-      expect(compile(expression)).toEqual(false);
+        expression = { $and: [true, false] };
+        expect(compile(expression)).toEqual(false);
 
-      expression = { $and: [false, true] };
-      expect(compile(expression)).toEqual(false);
+        expression = { $and: [false, true] };
+        expect(compile(expression)).toEqual(false);
 
-      expression = { $and: [false, false] };
-      expect(compile(expression)).toEqual(false);
+        expression = { $and: [false, false] };
+        expect(compile(expression)).toEqual(false);
+      });
     });
-  });
 
-  describe('OR expressions', () => {
-    it('should return expected value', () => {
-      let expression = { $or: [true, true] };
-      expect(compile(expression)).toEqual(true);
+    describe('OR expressions', () => {
+      it('should return expected value', () => {
+        let expression = { $or: [true, true] };
+        expect(compile(expression)).toEqual(true);
 
-      expression = { $or: [true, false] };
-      expect(compile(expression)).toEqual(true);
+        expression = { $or: [true, false] };
+        expect(compile(expression)).toEqual(true);
 
-      expression = { $or: [false, true] };
-      expect(compile(expression)).toEqual(true);
+        expression = { $or: [false, true] };
+        expect(compile(expression)).toEqual(true);
 
-      expression = { $or: [false, false] };
-      expect(compile(expression)).toEqual(false);
+        expression = { $or: [false, false] };
+        expect(compile(expression)).toEqual(false);
+      });
+    });
+
+    describe('unrecognized operator', () => {
+      it('should throw', () => {
+        const expression = { $someOp: ['x', 'y'] };
+
+        expect(() => compile(expression)).toThrow(
+          createException(`Unrecognized operator: '$someOp'`),
+        );
+      });
     });
   });
 
@@ -120,19 +132,19 @@ describe('compile()', function () {
         );
       });
     });
-  });
 
-  describe('Invalid function or operation expression', () => {
-    const options = {
-      fns: {},
-    };
+    describe('undefined function', () => {
+      const options = {
+        fns: {},
+      };
 
-    it('should throw', () => {
-      const expression = { opFn: ['x', 'y'] };
+      it('should throw', () => {
+        const expression = { someFn: ['x', 'y'] };
 
-      expect(() => compile(expression, options)).toThrow(
-        createException('Undefined function or operator: opFn'),
-      );
+        expect(() => compile(expression, options)).toThrow(
+          createException(`Undefined function: 'someFn'`),
+        );
+      });
     });
   });
 

@@ -30,8 +30,10 @@ Arguments:
 - `expression` - the boolean expression to be executed.
 - `options` - an optional object specifying options.
   - `fns` - an optional attribute specifying any function(s) used on the expression.
+   
+### Operators
 
-### AND operator
+#### AND operator
 
 ```javascript
 let expression = { $and: [true, true] };
@@ -47,7 +49,7 @@ expression = { $and: [false, false] };
 compile(expression); // false
 ```
 
-### OR operator
+#### OR operator
 
 ```javascript
 let expression = { $or: [true, true] };
@@ -61,6 +63,13 @@ compile(expression); // true
 
 expression = { $or: [false, false] };
 compile(expression); // false
+```
+
+#### Unrecognized operator
+```javascript
+const expression = { $someOp: ['x', 'y'] };
+
+compile(expression); // Error: Unrecognized operator: '$someOp'
 ```
 
 ### Callbacks
@@ -146,6 +155,14 @@ const expression = {
 
 compile(expression, options); // Error: Unexpected nested promise function
 ```
+
+#### Undefined function
+
+```javascript
+const expression = { someFn: ['x', 'y'] };
+
+compile(expression, options); // Error: Undefined function: 'someFn'
+````
 
 ### Compound expressions
 

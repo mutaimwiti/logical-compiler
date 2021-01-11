@@ -47,7 +47,13 @@ module.exports = (expression, options = {}) => {
     if (key in fns)
       return executeFunction(callCount, 'function', fns[key], getFnArgs(value));
 
-    if (key) throw createException(`Undefined function or operator: ${key}`);
+    if (key) {
+      const message = key.startsWith('$')
+        ? `Unrecognized operator: '${key}'`
+        : `Undefined function: '${key}'`;
+
+      throw createException(message);
+    }
 
     return false;
   };

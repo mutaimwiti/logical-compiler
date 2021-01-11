@@ -22,7 +22,7 @@ $ yarn add logical-compiler
 ```javascript
 import compile from 'logical-compiler';
 
-compile(expression, options); //false
+compile(expression, options); // false
 ```
 
 Arguments:
@@ -37,7 +37,7 @@ Arguments:
 
 ```javascript
 let expression = { $and: [true, true] };
-compile(expression); //true
+compile(expression); // true
 
 expression = { $and: [true, false] };
 compile(expression); // false
@@ -53,7 +53,7 @@ compile(expression); // false
 
 ```javascript
 let expression = { $or: [true, true] };
-compile(expression); //true
+compile(expression); // true
 
 expression = { $or: [true, false] };
 compile(expression); // true

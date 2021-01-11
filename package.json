@@ -15,14 +15,15 @@
   },
   "repository": "git@github.com:mutaimwiti/bool-eval.git",
   "keywords": [
-    "exec",
     "bool",
     "logic",
     "mongo",
+    "mongodb",
+    "compile",
     "boolean",
-    "executor",
-    "expression",
-    "mongo-style"
+    "logical",
+    "compiler",
+    "expression"
   ],
   "author": "Mutai Mwiti <mutaimwiti40@gmail.com>",
   "license": "MIT",

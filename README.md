@@ -76,27 +76,28 @@ compile(expression); // Error: Unrecognized operator: '$someOp'
 
 #### undefined
 ```javascript
-compile(); // Expected an expression
+compile(); // Error: Expected an expression
 ```
 
 #### boolean
 ```javascript
-expect(compile(true)).toEqual(true);
-expect(compile(false)).toEqual(false);
+compile(true); // true
+
+compile(false); // false
 ```
 
 #### string
 ```javascript
 const expression = 'test';
 
-compile(expression); // Unexpected token 'test'
+compile(expression); // Error: Unexpected token 'test'
 ```
 
 #### number
 ```javascript
 const expression = 201;
 
-compile(expression); // Unexpected token '201'
+compile(expression); // Error: Unexpected token '201'
 ```
 
 ### Callbacks

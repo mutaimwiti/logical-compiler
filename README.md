@@ -1,6 +1,6 @@
 # logical-compiler
 
-[![build](https://travis-ci.com/mutaimwiti/logical-compiler.svg?branch=master)](https://travis-ci.com/mutaimwiti/logical-compiler)
+[![build](https://travis-ci.com/mutaimwiti/logical-compiler.svg?branch=main)](https://travis-ci.com/mutaimwiti/logical-compiler)
 [![version](https://img.shields.io/npm/v/logical-compiler.svg)](https://www.npmjs.com/package/logical-compiler)
 [![downloads](https://img.shields.io/npm/dm/logical-compiler.svg)](https://www.npmjs.com/package/logical-compiler)
 [![license](https://img.shields.io/npm/l/logical-compiler.svg)](https://www.npmjs.com/package/logical-compiler)

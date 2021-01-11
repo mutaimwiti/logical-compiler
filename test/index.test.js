@@ -6,7 +6,7 @@ describe('compile()', function () {
     describe('undefined', () => {
       it('should throw', () => {
         expect(() => compile()).toThrow(
-            createException(`Expected an expression`),
+          createException(`Expected an expression`),
         );
       });
     });
@@ -23,7 +23,7 @@ describe('compile()', function () {
         const expression = 'some string';
 
         expect(() => compile(expression)).toThrow(
-            createException(`Unexpected token '${expression}'`),
+          createException(`Unexpected token '${expression}'`),
         );
       });
     });
@@ -33,7 +33,7 @@ describe('compile()', function () {
         const expression = 201;
 
         expect(() => compile(expression)).toThrow(
-            createException(`Unexpected token '${expression}'`),
+          createException(`Unexpected token '${expression}'`),
         );
       });
     });
@@ -43,7 +43,7 @@ describe('compile()', function () {
         const expression = 201;
 
         expect(() => compile(expression)).toThrow(
-            createException(`Unexpected token '${expression}'`),
+          createException(`Unexpected token '${expression}'`),
         );
       });
     });

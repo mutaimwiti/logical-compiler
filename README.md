@@ -22,7 +22,7 @@ $ yarn add logical-compiler
 ```javascript
 import compile from 'logical-compiler';
 
-compile(expression, options); // false
+compile(expression, options);
 ```
 
 Arguments:

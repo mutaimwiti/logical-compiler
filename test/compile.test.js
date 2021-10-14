@@ -1,4 +1,4 @@
-import compile from '../src';
+import compile from '../src/compile';
 import { createException } from '../src/utils';
 
 describe('compile()', function () {

@@ -1,30 +1,56 @@
 import { createException } from './utils';
 
-const operators = { $or: 'some', $and: 'every' };
-
 const getFnArgs = (value) => (Array.isArray(value) ? value : [value]);
 
-const executeFunction = (callCount, type, fn, args = []) => {
+const assertBoolean = (value, type) => {
+  if (typeof value !== 'boolean') {
+    throw createException(
+      `Unexpected return type [${typeof value}] from a ${type}`,
+    );
+  }
+
+  return value;
+};
+
+const executeFunction = (type, fn, args = []) => {
   const result = fn(...args);
 
   if (result instanceof Promise) {
-    if (callCount > 1) {
-      throw createException(`Unexpected nested promise ${type}`);
-    }
-  } else {
-    const resultType = typeof result;
-
-    if (resultType !== 'boolean') {
-      throw createException(
-        `Unexpected return type [${resultType}] from a ${type}`,
-      );
-    }
+    return result.then((v) => assertBoolean(v, type));
   }
 
-  return result;
+  return assertBoolean(result, type);
 };
 
-// Credit - https://stackoverflow.com/questions/55240828
+// Sequential short-circuit iterator: stops on the first child whose (resolved) value
+// equals `shortCircuitOn`. Sync and async children share the same control flow:
+// when a child returns a Promise, the rest of the walk continues inside `.then`.
+const stepAll = (items, evaluate, shortCircuitOn) => {
+  let i = 0;
+
+  const step = () => {
+    while (i < items.length) {
+      const r = evaluate(items[i]);
+
+      i += 1;
+
+      if (r instanceof Promise) {
+        return r.then((v) => (v === shortCircuitOn ? v : step()));
+      }
+
+      if (r === shortCircuitOn) return r;
+    }
+
+    return !shortCircuitOn;
+  };
+
+  return step();
+};
+
+const operators = {
+  $and: (items, evaluate) => stepAll(items, evaluate, false),
+  $or: (items, evaluate) => stepAll(items, evaluate, true),
+};
 
 module.exports = (expression, options = {}) => {
   if (expression === undefined) {
@@ -33,15 +59,10 @@ module.exports = (expression, options = {}) => {
 
   const { fns = {} } = options;
 
-  let callCount = 0;
-
   const evaluate = (exp) => {
-    callCount += 1;
-
     if (typeof exp === 'boolean') return exp;
 
-    if (typeof exp === 'function')
-      return executeFunction(callCount, 'callback', exp);
+    if (typeof exp === 'function') return executeFunction('callback', exp);
 
     if (!exp || typeof exp !== 'object') {
       throw createException(`Unexpected token '${exp}'`);
@@ -49,9 +70,10 @@ module.exports = (expression, options = {}) => {
 
     const [key, value] = Object.entries(exp)[0];
 
-    if (key in operators) return value[operators[key]](evaluate);
-    if (key in fns)
-      return executeFunction(callCount, 'function', fns[key], getFnArgs(value));
+    if (key in operators) return operators[key](value, evaluate);
+    if (key in fns) {
+      return executeFunction('function', fns[key], getFnArgs(value));
+    }
 
     if (key) {
       const message = key.startsWith('$')

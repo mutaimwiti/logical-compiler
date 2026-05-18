@@ -1,6 +1,6 @@
 {
   "name": "logical-compiler",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Compile MongoDB-like boolean expressions based on boolean operators AND and OR",
   "main": "index.js",
   "files": [

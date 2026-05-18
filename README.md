@@ -129,7 +129,7 @@ const expression = {
   $and: [true, () => Promise.resolve(true)],
 };
 
-compile(expression); // Error: Unexpected nested promise callback
+await compile(expression); // true
 ```
 
 ### Functions
@@ -181,7 +181,7 @@ const expression = {
   $or: [false, { authenticated: null }],
 };
 
-compile(expression, options); // Error: Unexpected nested promise function
+await compile(expression, options); // true
 ```
 
 #### Undefined function
@@ -271,10 +271,9 @@ compile(expression, options); // true
 
 ##### IMPORTANT NOTES
 
-1. An asynchronous call can be made inside a callback or function. Currently, the library does not support promise
-   returning callbacks or functions on nested expressions. If one is found, an exception is thrown. Promise returning
-   executables are only allowed ALONE. The clean workaround is to resolve values resulting from asynchronous calls 
-   before invoking the compiler.
+1. `compile` returns `boolean` for fully synchronous expressions and `Promise<boolean>` when any callback or
+   function returns a promise. `$and` stops at the first `false`; `$or` stops at the first `true`. Later operands
+   (including async ones) are not evaluated.
 
 2. Callbacks and functions must explicitly return boolean values to avoid the ambiguity of relying on truthiness. 
    Relying on truthiness would pose a serious loophole because the executable might accidentally resolve to true on a 

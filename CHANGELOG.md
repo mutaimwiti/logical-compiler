@@ -12,6 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `$not` and `$nor` operators. `$not: expr` returns the negation of the expression; `$nor: [exprs]` returns the negation of `$or` over the array. Both inherit the evaluator's sync/async and short-circuit behavior. (#5)
 - `LogicalCompilerError`, a named `Error` subclass carrying a `.code` field (`UNRECOGNIZED_OPERATOR`, `UNDEFINED_FUNCTION`, `UNEXPECTED_TOKEN`, `UNEXPECTED_RETURN_TYPE`, `EXPECTED_EXPRESSION`). Existing `.message` strings are unchanged and `instanceof Error` still holds. Exposed as `compile.LogicalCompilerError`. (#6)
 - TypeScript declarations (`index.d.ts`) describing `compile`, `Options` (`fns`), `Expression`, and `LogicalCompilerError`, wired up via the `types` field in `package.json`. (#7)
+- Implicit AND across the keys of an object expression, at any nesting depth. `{ $or: [...], isAdmin: x }` now evaluates as `$or AND isAdmin` instead of silently using only the first key. (#10)
+
+### Changed
+
+- An object expression with multiple keys is now AND-ed together instead of evaluating only the first key. This changes the result of multi-key expressions that previously relied on the silent truncation. (#10)
+
+### Fixed
+
+- An empty object expression (`{}`) now throws a `LogicalCompilerError` (`EXPECTED_EXPRESSION`) instead of a raw `TypeError`. (#10)
 
 ## [0.2.0] - 2026-05-18
 

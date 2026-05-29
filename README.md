@@ -294,6 +294,31 @@ compile(expression, options); // true
 
 > Operators can be nested in any fashion to achieve the desired logical check.
 
+### Multiple keys (implicit AND)
+
+When an object expression has more than one key, the keys are AND-ed together,
+at any nesting depth. This applies to operators and functions alike.
+
+```javascript
+const options = {
+  fns: {
+    isEven: (number) => number % 2 === 0,
+  },
+};
+
+let expression = { $or: [false, true], isEven: 6 };
+compile(expression, options); // true  ($or AND isEven)
+
+expression = { $or: [false, true], isEven: 7 };
+compile(expression, options); // false ($or is true, but isEven is false)
+```
+
+An empty object is not a valid expression and throws:
+
+```javascript
+compile({}); // Error: Expected an expression
+```
+
 ##### IMPORTANT NOTES
 
 1. `compile` returns `boolean` for fully synchronous expressions and `Promise<boolean>` when any callback or

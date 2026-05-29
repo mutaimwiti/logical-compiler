@@ -75,7 +75,25 @@ const compile = (expression, options = {}) => {
       throw createException(`Unexpected token '${exp}'`, 'UNEXPECTED_TOKEN');
     }
 
-    const [key, value] = Object.entries(exp)[0];
+    const entries = Object.entries(exp);
+
+    if (entries.length === 0) {
+      throw createException('Expected an expression', 'EXPECTED_EXPRESSION');
+    }
+
+    // Multiple keys are implicitly AND-ed together (e.g. { $or: [...], fn: x }
+    // means $or AND fn), at any nesting depth. Each entry is evaluated as its
+    // own single-key expression, reusing the short-circuit AND walker so
+    // sync/async handling and short-circuit come for free.
+    if (entries.length > 1) {
+      return stepAll(
+        entries.map(([k, v]) => ({ [k]: v })),
+        evaluate,
+        false,
+      );
+    }
+
+    const [key, value] = entries[0];
 
     if (key in operators) return operators[key](value, evaluate);
     if (key in fns) {

@@ -13,7 +13,10 @@
     "build": "babel -d lib/ src/",
     "prepublishOnly": "yarn clean && yarn build && yarn lint && yarn test"
   },
-  "repository": "git@github.com:mutaimwiti/bool-eval.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mutaimwiti/logical-compiler.git"
+  },
   "keywords": [
     "bool",
     "logic",

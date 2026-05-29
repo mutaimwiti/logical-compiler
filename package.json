@@ -1,10 +1,12 @@
 {
   "name": "logical-compiler",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Compile MongoDB-like boolean expressions based on boolean operators AND and OR",
   "main": "index.js",
+  "types": "index.d.ts",
   "files": [
-    "/lib"
+    "/lib",
+    "/index.d.ts"
   ],
   "scripts": {
     "lint": "eslint .",

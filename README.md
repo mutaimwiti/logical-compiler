@@ -65,6 +65,31 @@ expression = { $or: [false, false] };
 compile(expression); // false
 ```
 
+#### NOT operator
+
+`$not` takes a single expression and returns its negation.
+
+```javascript
+let expression = { $not: true };
+compile(expression); // false
+
+expression = { $not: { $and: [true, true] } };
+compile(expression); // false
+```
+
+#### NOR operator
+
+`$nor` takes an array and returns the negation of `$or` over it, i.e. `true`
+only when every operand is `false`.
+
+```javascript
+let expression = { $nor: [false, false] };
+compile(expression); // true
+
+expression = { $nor: [false, true] };
+compile(expression); // false
+```
+
 #### Unrecognized operator
 ```javascript
 const expression = { $someOp: ['x', 'y'] };
@@ -102,21 +127,12 @@ compile(expression); // Error: Unexpected token '201'
 
 ### Callbacks
 
-#### Simple callback
+A callback is a function that returns a boolean. If it returns a promise,
+`compile` resolves to a promise you `await`.
 
 ```javascript
 let cb = () => true;
 compile(cb); // true
-
-cb = () => false;
-compile(cb); // false
-```
-
-#### Promise callback
-
-```javascript
-cb = () => Promise.resolve(true);
-await compile(cb); //true
 
 cb = () => Promise.resolve(false);
 await compile(cb); // false
@@ -134,38 +150,20 @@ await compile(expression); // true
 
 ### Functions
 
-#### Simple function
+A function is defined on the `fns` attribute of the `options` argument. It may
+return a boolean or a promise.
 
 ```javascript
 const options = {
   fns: {
     isEven: (number) => number % 2 === 0,
-  },
-};
-
-let expression = { isEven: 7 };
-compile(expression, options); // false
-
-expression = { isEven: 6 };
-compile(expression, options); // true
-```
-
-> Note that the function is defined on the `fns` attribute of the `options` argument.
-
-#### Promise function
-
-```javascript
-const options = {
-  fns: {
     isEqual: (num1, num2) => Promise.resolve(num1 === num2),
   },
 };
 
-expression = { isEqual: [3, 3] };
-await compile(expression, options); // true
+compile({ isEven: 6 }, options); // true
 
-expression = { isEqual: [3, 5] };
-await compile(expression, options); // false
+await compile({ isEqual: [3, 5] }, options); // false
 ```
 
 #### Nested promise function
@@ -269,6 +267,31 @@ compile(expression, options); // true
 
 > Operators can be nested in any fashion to achieve the desired logical check.
 
+### Multiple keys (implicit AND)
+
+When an object expression has more than one key, the keys are AND-ed together,
+at any nesting depth. This applies to operators and functions alike.
+
+```javascript
+const options = {
+  fns: {
+    isEven: (number) => number % 2 === 0,
+  },
+};
+
+let expression = { $or: [false, true], isEven: 6 };
+compile(expression, options); // true  ($or AND isEven)
+
+expression = { $or: [false, true], isEven: 7 };
+compile(expression, options); // false ($or is true, but isEven is false)
+```
+
+An empty object is not a valid expression and throws:
+
+```javascript
+compile({}); // Error: Expected an expression
+```
+
 ##### IMPORTANT NOTES
 
 1. `compile` returns `boolean` for fully synchronous expressions and `Promise<boolean>` when any callback or
@@ -279,6 +302,32 @@ compile(expression, options); // true
    Relying on truthiness would pose a serious loophole because the executable might accidentally resolve to true on a 
    non-boolean value. If the library encounters a callback that resolves to a non-boolean value, it throws an exception. 
    See [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) documentation on truthy values.
+
+### Error handling
+
+All errors thrown by `compile` are instances of `LogicalCompilerError`, a
+subclass of `Error` that carries a `.code` field for programmatic handling. The
+human-readable `.message` is unchanged.
+
+```javascript
+import compile from 'logical-compiler';
+
+try {
+  compile({ $unknown: [] });
+} catch (error) {
+  error instanceof compile.LogicalCompilerError; // true
+  error.code; // 'UNRECOGNIZED_OPERATOR'
+}
+```
+
+Codes: `UNRECOGNIZED_OPERATOR`, `UNDEFINED_FUNCTION`, `UNEXPECTED_TOKEN`,
+`UNEXPECTED_RETURN_TYPE`, `EXPECTED_EXPRESSION`.
+
+### TypeScript
+
+Type declarations ship with the package, so no separate `@types` install is
+needed. The supporting types `compile.Expression`, `compile.Options`, and
+`compile.LogicalCompilerError` are available for use in your own code.
 
 ### Licence
 

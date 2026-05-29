@@ -65,6 +65,31 @@ expression = { $or: [false, false] };
 compile(expression); // false
 ```
 
+#### NOT operator
+
+`$not` takes a single expression and returns its negation.
+
+```javascript
+let expression = { $not: true };
+compile(expression); // false
+
+expression = { $not: { $and: [true, true] } };
+compile(expression); // false
+```
+
+#### NOR operator
+
+`$nor` takes an array and returns the negation of `$or` over it, i.e. `true`
+only when every operand is `false`.
+
+```javascript
+let expression = { $nor: [false, false] };
+compile(expression); // true
+
+expression = { $nor: [false, true] };
+compile(expression); // false
+```
+
 #### Unrecognized operator
 ```javascript
 const expression = { $someOp: ['x', 'y'] };
@@ -279,6 +304,32 @@ compile(expression, options); // true
    Relying on truthiness would pose a serious loophole because the executable might accidentally resolve to true on a 
    non-boolean value. If the library encounters a callback that resolves to a non-boolean value, it throws an exception. 
    See [MDN](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) documentation on truthy values.
+
+### Error handling
+
+All errors thrown by `compile` are instances of `LogicalCompilerError`, a
+subclass of `Error` that carries a `.code` field for programmatic handling. The
+human-readable `.message` is unchanged.
+
+```javascript
+import compile from 'logical-compiler';
+
+try {
+  compile({ $unknown: [] });
+} catch (error) {
+  error instanceof compile.LogicalCompilerError; // true
+  error.code; // 'UNRECOGNIZED_OPERATOR'
+}
+```
+
+Codes: `UNRECOGNIZED_OPERATOR`, `UNDEFINED_FUNCTION`, `UNEXPECTED_TOKEN`,
+`UNEXPECTED_RETURN_TYPE`, `EXPECTED_EXPRESSION`.
+
+### TypeScript
+
+Type declarations ship with the package, so no separate `@types` install is
+needed. The supporting types `compile.Expression`, `compile.Options`, and
+`compile.LogicalCompilerError` are available for use in your own code.
 
 ### Licence
 

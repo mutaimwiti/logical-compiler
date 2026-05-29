@@ -1,4 +1,4 @@
-import { createException } from './utils';
+import { createException, LogicalCompilerError } from './utils';
 
 const getFnArgs = (value) => (Array.isArray(value) ? value : [value]);
 
@@ -6,6 +6,7 @@ const assertBoolean = (value, type) => {
   if (typeof value !== 'boolean') {
     throw createException(
       `Unexpected return type [${typeof value}] from a ${type}`,
+      'UNEXPECTED_RETURN_TYPE',
     );
   }
 
@@ -47,14 +48,20 @@ const stepAll = (items, evaluate, shortCircuitOn) => {
   return step();
 };
 
+// Negation that preserves the sync/async contract: a sync child negates
+// immediately, a promise child negates once it resolves.
+const negate = (r) => (r instanceof Promise ? r.then((v) => !v) : !r);
+
 const operators = {
   $and: (items, evaluate) => stepAll(items, evaluate, false),
   $or: (items, evaluate) => stepAll(items, evaluate, true),
+  $not: (value, evaluate) => negate(evaluate(value)),
+  $nor: (items, evaluate) => negate(stepAll(items, evaluate, true)),
 };
 
-module.exports = (expression, options = {}) => {
+const compile = (expression, options = {}) => {
   if (expression === undefined) {
-    throw createException('Expected an expression');
+    throw createException('Expected an expression', 'EXPECTED_EXPRESSION');
   }
 
   const { fns = {} } = options;
@@ -65,7 +72,7 @@ module.exports = (expression, options = {}) => {
     if (typeof exp === 'function') return executeFunction('callback', exp);
 
     if (!exp || typeof exp !== 'object') {
-      throw createException(`Unexpected token '${exp}'`);
+      throw createException(`Unexpected token '${exp}'`, 'UNEXPECTED_TOKEN');
     }
 
     const [key, value] = Object.entries(exp)[0];
@@ -76,11 +83,11 @@ module.exports = (expression, options = {}) => {
     }
 
     if (key) {
-      const message = key.startsWith('$')
-        ? `Unrecognized operator: '${key}'`
-        : `Undefined function: '${key}'`;
+      const [message, code] = key.startsWith('$')
+        ? [`Unrecognized operator: '${key}'`, 'UNRECOGNIZED_OPERATOR']
+        : [`Undefined function: '${key}'`, 'UNDEFINED_FUNCTION'];
 
-      throw createException(message);
+      throw createException(message, code);
     }
 
     return false;
@@ -88,3 +95,7 @@ module.exports = (expression, options = {}) => {
 
   return evaluate(expression);
 };
+
+compile.LogicalCompilerError = LogicalCompilerError;
+
+module.exports = compile;

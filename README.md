@@ -127,21 +127,12 @@ compile(expression); // Error: Unexpected token '201'
 
 ### Callbacks
 
-#### Simple callback
+A callback is a function that returns a boolean. If it returns a promise,
+`compile` resolves to a promise you `await`.
 
 ```javascript
 let cb = () => true;
 compile(cb); // true
-
-cb = () => false;
-compile(cb); // false
-```
-
-#### Promise callback
-
-```javascript
-cb = () => Promise.resolve(true);
-await compile(cb); //true
 
 cb = () => Promise.resolve(false);
 await compile(cb); // false
@@ -159,38 +150,20 @@ await compile(expression); // true
 
 ### Functions
 
-#### Simple function
+A function is defined on the `fns` attribute of the `options` argument. It may
+return a boolean or a promise.
 
 ```javascript
 const options = {
   fns: {
     isEven: (number) => number % 2 === 0,
-  },
-};
-
-let expression = { isEven: 7 };
-compile(expression, options); // false
-
-expression = { isEven: 6 };
-compile(expression, options); // true
-```
-
-> Note that the function is defined on the `fns` attribute of the `options` argument.
-
-#### Promise function
-
-```javascript
-const options = {
-  fns: {
     isEqual: (num1, num2) => Promise.resolve(num1 === num2),
   },
 };
 
-expression = { isEqual: [3, 3] };
-await compile(expression, options); // true
+compile({ isEven: 6 }, options); // true
 
-expression = { isEqual: [3, 5] };
-await compile(expression, options); // false
+await compile({ isEqual: [3, 5] }, options); // false
 ```
 
 #### Nested promise function
